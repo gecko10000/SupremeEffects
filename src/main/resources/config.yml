@@ -1,0 +1,64 @@
+# 20 = 1 second
+effectAddInterval: 100
+extraEffectTime: 220
+
+effectItems:
+- absorption:golden_apple
+- bad_omen:crossbow
+- blindness:ender_pearl
+- conduit_power:conduit
+- confusion:poisonous_potato
+- damage_resistance:netherite_chestplate
+- dolphins_grace:cod
+- fast_digging:golden_shovel
+- fire_resistance:lava_bucket
+- glowing:glowstone_dust
+- harm:magma_block
+- heal:heart_of_the_sea
+- health_boost:golden_apple
+- hero_of_the_village:emerald
+- hunger:chicken
+- increase_damage:netherite_sword
+- invisibility:glass
+- jump:rabbit_foot
+- levitation:shulker_spawn_egg
+- luck:enchanted_book
+- night_vision:ender_eye
+- poison:poisonous_potato
+- regeneration:potion
+- saturation:cooked_beef
+- slow:cobweb
+- slow_digging:wooden_pickaxe
+- slow_falling:feather
+- speed:sugar
+- unluck:book
+- water_breathing:turtle_helmet
+- weakness:wooden_sword
+- wither:wither_rose
+
+selectionGUI:
+  name: "&aEffects"
+  fill: true
+  fillerItem:
+    material: black_stained_glass_pane
+    name: "&r"
+  itemNames: "&e%effect% (&b%current%/%max%&e)"
+  resetItem:
+    material: red_bed
+    name: "&cReset"
+
+effectGUI:
+  fill: true
+  fillerItem:
+    material: black_stained_glass_pane
+    name: "&r"
+  name: "&e%effect%"
+  levelNames: "&aLevel %level%"
+  backItem:
+    material: nether_star
+    name: "&cBack"
+  offItem:
+    material: barrier
+    name: "&cOff"
+
+items:

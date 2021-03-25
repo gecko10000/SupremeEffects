@@ -1,0 +1,16 @@
+name: SupremeEffects
+main: io.github.levtey.SupremeEffects
+api-version: 1.16
+version: 0.0.1
+author: levtey
+commands:
+  effects:
+    aliases: [potions]
+    usage: /<command> help
+permissions:
+  supremeeffects.gui:
+    default: true
+  supremeeffects.reload:
+    default: op
+  supremeeffects.reset:
+    default: op
