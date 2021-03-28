@@ -1,4 +1,4 @@
-package io.github.levtey;
+package io.github.levtey.SupremeEffects;
 
 import java.util.UUID;
 

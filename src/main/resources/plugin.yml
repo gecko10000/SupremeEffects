@@ -1,5 +1,5 @@
 name: SupremeEffects
-main: io.github.levtey.SupremeEffects
+main: io.github.levtey.SupremeEffects.SupremeEffects
 api-version: 1.16
 version: 0.0.1
 author: levtey
