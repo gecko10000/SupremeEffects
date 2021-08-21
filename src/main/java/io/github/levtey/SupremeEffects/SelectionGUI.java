@@ -25,12 +25,14 @@ public class SelectionGUI implements InventoryHolder {
 
 	private final SupremeEffects plugin;
 	private final UUID uuid;
+	private final Player player;
 	private final Inventory inv;
 	public final Map<Integer, PotionEffectType> effectSlots = new HashMap<>();
 	public final int size;
 	
 	public SelectionGUI(SupremeEffects plugin, Player player) {
 		this.plugin = plugin;
+		this.player = player;
 		this.uuid = player.getUniqueId();
 		Map<PotionEffectType, Integer> allowedEffects = plugin.getAllowedLevels(Bukkit.getPlayer(uuid));
 		size = ((allowedEffects.size() - 1) / 9 + 2) * 9;
@@ -51,7 +53,7 @@ public class SelectionGUI implements InventoryHolder {
 		for (PotionEffectType type : allowedEffects.keySet().stream()
 				.sorted((a, b) -> Collator.getInstance().compare(a.getName(), b.getName()))
 				.collect(Collectors.toList())) {
-			int currentLevel = plugin.effects.get(uuid).getOrDefault(type, -1);
+			int currentLevel = player.getPotionEffect(type) == null ? -1 : player.getPotionEffect(type).getAmplifier();
 			ItemStack typeItem = new ItemStack(mappings.getOrDefault(type, Material.BARRIER));
 			typeItem.setAmount(Math.max(currentLevel + 1, 1));
 			ItemMeta typeMeta = typeItem.getItemMeta();

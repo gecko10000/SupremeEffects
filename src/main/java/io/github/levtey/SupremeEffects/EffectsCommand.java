@@ -33,7 +33,6 @@ public class EffectsCommand implements CommandExecutor {
 			if (!(sender.hasPermission("supremeeffects.reload"))) return commandResponse(sender, NO_PERMS);
 			plugin.saveDefaultConfig();
 			plugin.reloadConfig();
-			plugin.reloadEffectTask();
 		} else if (args[0].equalsIgnoreCase("reset")) {
 			if (!(sender.hasPermission("supremeeffects.reset"))) return commandResponse(sender, NO_PERMS);
 			Player targetPlayer = null;

@@ -67,18 +67,4 @@ public class Listeners implements Listener {
 		}
 	}
 	
-	@EventHandler
-	public void onJoin(PlayerJoinEvent evt) {
-		Player player = evt.getPlayer();
-		UUID uuid = player.getUniqueId();
-		plugin.effects.put(uuid, plugin.load(player));
-	}
-	
-	@EventHandler
-	public void onQuit(PlayerQuitEvent evt) {
-		Player player = evt.getPlayer();
-		plugin.save(player);
-		plugin.effects.remove(player.getUniqueId());
-	}
-	
 }

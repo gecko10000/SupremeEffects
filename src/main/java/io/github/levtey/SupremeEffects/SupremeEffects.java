@@ -24,91 +24,33 @@ import org.bukkit.scheduler.BukkitTask;
 import net.md_5.bungee.api.ChatColor;
 
 public class SupremeEffects extends JavaPlugin {
-	
-	public Map<UUID, Map<PotionEffectType, Integer>> effects = new HashMap<>();
-	private BukkitTask effectTask;
 
 	public void onEnable() {
 		saveDefaultConfig();
-		reloadEffectTask();
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			effects.put(player.getUniqueId(), load(player));
-		}
 		new EffectsCommand(this);
 		new Listeners(this);
 	}
 	
 	public void onDisable() {
-		effectTask.cancel();
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			InventoryHolder openHolder = player.getOpenInventory().getTopInventory().getHolder();
 			if (openHolder instanceof EffectGUI || openHolder instanceof SelectionGUI) {
 				player.closeInventory();
 			}
-			save(player);
 		}
 	}
 	
 	public void resetEffects(Player player) {
-		for (PotionEffectType type : PotionEffectType.values()) {
-			setEffect(player, type, -1);
-		}
+		player.getActivePotionEffects().stream()
+		.map(PotionEffect::getType)
+		.forEach(player::removePotionEffect);
 	}
 	
 	public void setEffect(Player player, PotionEffectType type, int level) {
-		UUID uuid = player.getUniqueId();
-		if (level < 0) {
-			effects.get(uuid).remove(type);
-		} else {
-			effects.get(uuid).put(type, level);
-		}
-	}
-	
-	public void reloadEffectTask() {
-		if (effectTask != null) effectTask.cancel();
-		effectTask = effectTask();
-	}
-	
-	private BukkitTask effectTask() {
-		long effectAddInterval = getConfig().getLong("effectAddInterval");
-		long extraEffectTime = getConfig().getLong("extraEffectTime");
-		return Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
-			for (UUID uuid : effects.keySet()) {
-				Player player = Bukkit.getPlayer(uuid);
-				if (player == null) continue;
-				Map<PotionEffectType, Integer> playerEffects = effects.get(uuid);
-				for (PotionEffectType type : playerEffects.keySet()) {
-					Bukkit.getScheduler().runTask(this, () -> {
-						player.addPotionEffect(type.createEffect((int) (effectAddInterval + extraEffectTime), playerEffects.get(type)));
-					});
-				}
-			}
-		}, 0L, effectAddInterval);
-	}
-	
-	public Map<PotionEffectType, Integer> load(Player player) {
-		PersistentDataContainer pdc = player.getPersistentDataContainer();
-		Map<PotionEffectType, Integer> savedEffects = new HashMap<>();
-		Map<PotionEffectType, Integer> allowedEffects = getAllowedLevels(player);
-		for (PotionEffectType type : PotionEffectType.values()) {
-			if (pdc.has(key(type.getName()), PersistentDataType.INTEGER)) {
-				int savedLevel = pdc.get(key(type.getName()), PersistentDataType.INTEGER);
-				if (allowedEffects.getOrDefault(type, -1) >= savedLevel) {
-					savedEffects.put(type, savedLevel);
-				}
-			}
-		}
-		return savedEffects;
-	}
-	
-	public void save(Player player) {
-		PersistentDataContainer pdc = player.getPersistentDataContainer();
-		for (PotionEffectType type : PotionEffectType.values()) {
-			pdc.remove(key(type.getName()));
-		}
-		Map<PotionEffectType, Integer> currentEffects = effects.getOrDefault(player.getUniqueId(), new HashMap<PotionEffectType, Integer>());
-		for (PotionEffectType type : currentEffects.keySet()) {
-			pdc.set(key(type.getName()), PersistentDataType.INTEGER, currentEffects.getOrDefault(type, 0));
+		player.removePotionEffect(type);
+		if (level != -1) {
+			PotionEffect effect = new PotionEffect(type, Integer.MAX_VALUE, level, false, false);
+			player.addPotionEffect(effect);
 		}
 	}
 	

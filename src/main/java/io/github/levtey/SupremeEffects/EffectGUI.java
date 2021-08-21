@@ -30,7 +30,7 @@ public class EffectGUI implements InventoryHolder {
 		this.displayMaterial = displayMaterial;
 		this.type = type;
 		this.allowedLevels = allowedLevels;
-		this.selectedLevel = plugin.effects.get(uuid).getOrDefault(type, -1);
+		this.selectedLevel = player.getPotionEffect(type) == null ? -1 : player.getPotionEffect(type).getAmplifier();
 		inv = Bukkit.createInventory(this, SIZE, plugin.makeReadable(
 				plugin.getConfig().getString("effectGUI.name")
 				.replace("%effect%", plugin.capitalize(type))));
